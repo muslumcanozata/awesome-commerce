@@ -1,0 +1,17 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: create-drop
+  datasource:
+    url: jdbc:postgresql://localhost:5435/order
+    username: myuser
+    password: secret
+    driverClassName: org.postgresql.Driver
+  sql:
+    init:
+      platform: postgres
+
+server:
+  port: 8080
