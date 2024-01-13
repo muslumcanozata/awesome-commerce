@@ -1,0 +1,118 @@
+services:
+  order-db:
+    container_name: order-db
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=order'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=myuser'
+    ports:
+      - '5432:5432'
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U postgres'" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - service-network
+  product-command-db:
+    container_name: product-command-db
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=product'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=myuser'
+    ports:
+      - '5433:5432'
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U postgres'" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - service-network
+  stock-db:
+    container_name: stock-db
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=stock'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=myuser'
+    ports:
+      - '5434:5432'
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U postgres'" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - service-network
+  user-db:
+    container_name: user-db
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=user'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USER=myuser'
+    ports:
+      - '5435:5432'
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U postgres'" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+    networks:
+      - service-network
+  elasticsearch:
+    container_name: elasticsearch
+    image: 'elasticsearch:8.11.3'
+    environment:
+      - discovery.type=single-node
+    ports:
+      - "9200:9200"
+    networks:
+      - service-network
+  order-service:
+    container_name: order-service
+    build: ./order-service
+    ports:
+      - "8080"
+    depends_on:
+      order-db:
+        condition: service_healthy
+    networks:
+      - service-network
+  product-command-service:
+    container_name: product-command-service
+    build: ./product-service
+    ports:
+      - "8081"
+    depends_on:
+      product-command-db:
+        condition: service_healthy
+    networks:
+      - service-network
+  stock-service:
+    container_name: stock-service
+    build: ./stock-service
+    ports:
+      - "8082"
+    depends_on:
+      stock-db:
+        condition: service_healthy
+    networks:
+      - service-network
+  user-service:
+    container_name: user-service
+    build: ./user-service
+    ports:
+      - "8083"
+    depends_on:
+      user-db:
+        condition: service_healthy
+    networks:
+      - service-network
+
+networks:
+  service-network:
+    driver: bridge
