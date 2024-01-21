@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: gateway-service
+    cloud:
+      gateway:
+        routes:
+          - id: order-service
+            predicates:
+              - Path=/order-service/
+            uri: localhost:8081
+          - id: product-service
+            predicates:
+              - Path=/product-service/
+            uri: localhost:8082
+          - id: stock-service
+            predicates:
+              - Path=/stock-service/
+            uri: localhost:8083
+          - id: user-service
+            predicates:
+              - Path=/user-service/
+            uri: localhost:8084
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server/eureka/
+    registerWithEureka: false
+    fetchRegistry: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ["prometheus", "health", "info"]
+server:
+  port: 8080
