@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yaml
+    kompose.version: 1.32.0 (HEAD)
+  labels:
+    io.kompose.service: product-db
+  name: product-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: product-db
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yaml
+        kompose.version: 1.32.0 (HEAD)
+      labels:
+        io.kompose.network/awesome-commerce-service-network: "true"
+        io.kompose.service: product-db
+    spec:
+      containers:
+        - env:
+            - name: POSTGRES_DB
+              value: product
+            - name: POSTGRES_PASSWORD
+              value: secret
+            - name: POSTGRES_USER
+              value: myuser
+          image: postgres:latest
+          livenessProbe:
+            exec:
+              command:
+                - sh -c 'pg_isready -U postgres'
+            failureThreshold: 3
+            periodSeconds: 10
+            timeoutSeconds: 3
+          name: product-db
+          ports:
+            - containerPort: 5432
+              hostPort: 5434
+              protocol: TCP
+      restartPolicy: Always
