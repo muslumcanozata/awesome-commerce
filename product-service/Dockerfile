@@ -1,6 +1,11 @@
+FROM gradle:8.5.0-jdk21 AS build
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle build --no-daemon
+
 FROM amazoncorretto:21-alpine-jdk
 RUN mkdir /app
-COPY app.jar /app/app.jar
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/product-service.jar
 WORKDIR /app
-EXPOSE 8081
-ENTRYPOINT ["java", "-jar", "app.jar"]
+EXPOSE 8082
+ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=test", "product-service.jar"]
