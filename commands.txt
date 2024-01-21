@@ -1,0 +1,16 @@
+docker install https://docs.docker.com/engine/install/debian/
+sudo usermod -aG docker $USER && newgrp docker
+curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+sudo install minikube-linux-amd64 /usr/local/bin/minikube
+minikube start
+chmod +x kompose
+sudo mv ./kompose /usr/local/bin/kompose
+kompose convert -f compose.yaml
+
+//keycloak create admin user
+docker compose stop keycloak
+docker exec 21cad93fc9fd /opt/jboss/keycloak/bin/add-user-keycloak.sh -u admin -p admin
+docker compose start keycloak
+
+//docker compose with force build
+docker compose up -d --build
