@@ -2,9 +2,9 @@ package com.commerce.product.service;
 
 import com.commerce.product.exception.ProductNotFoundException;
 import com.commerce.product.mapper.CoreMapper;
-import com.commerce.product.model.dto.ProductDto;
+import com.commerce.product.model.dto.ProductDTO;
 import com.commerce.product.model.entity.Product;
-import com.commerce.product.repository.ProductRepository;
+import com.commerce.product.dao.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,18 +26,17 @@ class ProductServiceTest {
     @Test
     void createProduct_ShouldReturnCreatedProduct() {
         //given
-        ProductDto productDtoToCreate = new ProductDto();
-        productDtoToCreate.setId(1L);
-        Product savedProduct = CoreMapper.INSTANCE.productDtoToProduct(productDtoToCreate);
+        ProductDTO productDTOToCreate = ProductServiceTestUtil.createProductDTO();
+        Product savedProduct = CoreMapper.INSTANCE.productDtoToProduct(productDTOToCreate);
 
         //when
         when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
 
-        ProductDto result = productService.createProduct(productDtoToCreate);
+        ProductDTO result = productService.createProduct(productDTOToCreate);
 
         //then
         assertNotNull(result);
-        assertEquals(productDtoToCreate.getId(), result.getId());
+        assertEquals(productDTOToCreate.id(), result.id());
         verify(productRepository, times(1)).save(any(Product.class));
     }
 
@@ -52,19 +51,18 @@ class ProductServiceTest {
     void updateProduct_ExistingId_ShouldReturnUpdatedProduct() {
         //given
         Long productId = 1L;
-        ProductDto updatedProductDto = new ProductDto();
-        updatedProductDto.setId(productId);
-        Product updatedProduct = CoreMapper.INSTANCE.productDtoToProduct(updatedProductDto);
+        ProductDTO updatedProductDTO = ProductServiceTestUtil.createProductDTO();
+        Product updatedProduct = CoreMapper.INSTANCE.productDtoToProduct(updatedProductDTO);
 
         //when
         when(productRepository.existsById(productId)).thenReturn(true);
         when(productRepository.save(any(Product.class))).thenReturn(updatedProduct);
 
-        var result = productService.updateProduct(productId, updatedProductDto);
+        var result = productService.updateProduct(productId, updatedProductDTO);
 
         //then
         assertNotNull(result);
-        assertEquals(updatedProductDto.getId(), result.getId());
+        assertEquals(updatedProductDTO.id(), result.id());
         verify(productRepository, times(1)).existsById(productId);
         verify(productRepository, times(1)).save(any(Product.class));
     }
@@ -72,15 +70,14 @@ class ProductServiceTest {
     @Test
     void updateProduct_NonExistingId_ShouldThrowProductNotFoundException() {
         //given
-        Long productId = 1L;
-        ProductDto updatedProductDto = new ProductDto();
+        ProductDTO updatedProductDTO = ProductServiceTestUtil.createProductDTO();
 
         //when
-        when(productRepository.existsById(productId)).thenReturn(false);
+        when(productRepository.existsById(updatedProductDTO.id())).thenReturn(false);
 
         //then
-        assertThrows(ProductNotFoundException.class, () -> productService.updateProduct(productId, updatedProductDto));
-        verify(productRepository, times(1)).existsById(productId);
+        assertThrows(ProductNotFoundException.class, () -> productService.updateProduct(updatedProductDTO.id(), updatedProductDTO));
+        verify(productRepository, times(1)).existsById(updatedProductDTO.id());
         verify(productRepository, never()).save(any());
     }
 
