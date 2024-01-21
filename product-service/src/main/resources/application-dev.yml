@@ -1,0 +1,22 @@
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:postgresql://localhost:5434/product
+    username: myuser
+    password: secret
+    driverClassName: org.postgresql.Driver
+  sql:
+    init:
+      platform: postgres
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+server:
+  servlet:
+    context-path: /product-service
+  port: 8082
