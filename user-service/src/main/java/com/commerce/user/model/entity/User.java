@@ -1,10 +1,7 @@
 package com.commerce.user.model.entity;
 
 import com.commerce.user.model.enums.UserRole;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +13,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-public class User implements Serializable {
+@Table(name = "users")
+public class User extends BaseEntity implements Serializable  {
     @Serial
     private static final long serialVersionUID = 2L;
 

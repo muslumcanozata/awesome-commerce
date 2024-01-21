@@ -5,15 +5,26 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.envers.AuditTable;
+import org.hibernate.envers.Audited;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Audited
+@AuditTable(value = "AU_ORDER_ITEM")
 @Entity
-public class OrderItem {
+public class OrderItem extends BaseEntity implements Serializable  {
+    @Serial
+    private static final long serialVersionUID = 3L;
     @Id
     private Long id;
     private Long productId;
-    private int quantity;
-    private double subtotal;
+    private double quantity;
+    private BigDecimal unitPrice;
+    private Integer discountPercentage;
 }

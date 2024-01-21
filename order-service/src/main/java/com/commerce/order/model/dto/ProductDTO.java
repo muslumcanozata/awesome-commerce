@@ -1,14 +1,5 @@
 package com.commerce.order.model.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.time.LocalDate;
 
-@Getter
-@Setter
-public class ProductDTO {
-    private Long id;
-    private String productName;
-    private String description;
-    private double price;
-    private String quantityType;
-}
+public record ProductDTO (Long id, String productName, String description, double price, String quantityType, LocalDate updatedAt, LocalDate createdAt) {}
