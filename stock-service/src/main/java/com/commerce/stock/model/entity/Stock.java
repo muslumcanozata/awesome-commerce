@@ -1,10 +1,7 @@
 package com.commerce.stock.model.entity;
 
 import com.commerce.stock.model.enums.QuantityType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,6 +18,7 @@ public class Stock extends BaseEntity implements Serializable {
     private static final long serialVersionUID = 3L;
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long productId;
     private double availableQuantity;
