@@ -17,7 +17,7 @@ a product service, a stock service, a user service to handle all the business.
 
 ## 🔍 System Architecture Diagram
 
-![SystemArchitectureDiagram](https://i.ibb.co/TrvLDrq/Screenshot-at-Jan-22-00-49-07.png)
+![SystemArchitectureDiagram](https://i.ibb.co/HqPVtMp/system-design.png)
 
 ## 🛠 Technology Stacks
 
