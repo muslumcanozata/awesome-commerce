@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yaml
+    kompose.version: 1.32.0 (HEAD)
+  labels:
+    io.kompose.service: product-service
+  name: product-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: product-service
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f compose.yaml
+        kompose.version: 1.32.0 (HEAD)
+      labels:
+        io.kompose.network/awesome-commerce-service-network: "true"
+        io.kompose.service: product-service
+    spec:
+      containers:
+        - image: product-service
+          name: product-service
+          ports:
+            - containerPort: 8082
+              hostPort: 8082
+              protocol: TCP
+      restartPolicy: Always

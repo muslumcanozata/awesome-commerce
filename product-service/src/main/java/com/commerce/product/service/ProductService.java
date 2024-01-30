@@ -1,9 +1,14 @@
 package com.commerce.product.service;
 
-import com.commerce.product.model.dto.ProductDto;
+import com.commerce.product.model.dto.ProductDTO;
+
+import java.util.List;
 
 public interface ProductService {
-    ProductDto createProduct(ProductDto product);
-    ProductDto updateProduct(Long productId, ProductDto updatedProductDto);
+    ProductDTO createProduct(ProductDTO product);
+    ProductDTO updateProduct(Long productId, ProductDTO updatedProductDTO);
     void deleteProduct(Long productId);
+    List<ProductDTO> searchProductsByCategory(String category);
+    List<ProductDTO> searchProductsByProductName(String productName);
+
 }

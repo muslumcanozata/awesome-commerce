@@ -1,5 +1,8 @@
 package com.commerce.user.model.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum UserRole {
     ADMIN("Admin"),
     CUSTOMER("Customer"),
@@ -9,9 +12,5 @@ public enum UserRole {
 
     UserRole(String displayName) {
         this.displayName = displayName;
-    }
-
-    public String getDisplayName() {
-        return displayName;
     }
 }

@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        image_name: ["order-service", "stock-service", "product-service", "user-service"]
+        image_name: ["order-service", "stock-service", "product-service", "user-service", "eureka-server", "gateway"]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f compose.yaml
+    kompose.version: 1.32.0 (HEAD)
+  labels:
+    io.kompose.service: keycloak
+  name: keycloak
+spec:
+  ports:
+    - name: "18443"
+      port: 18443
+      targetPort: 8443
+    - name: "28080"
+      port: 28080
+      targetPort: 8080
+    - name: "19990"
+      port: 19990
+      targetPort: 9990
+  selector:
+    io.kompose.service: keycloak
